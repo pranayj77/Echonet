@@ -78,7 +78,7 @@ def savevideo(filename: str, array: np.ndarray, fps: typing.Union[float, int] = 
 def get_mean_and_std(dataset: torch.utils.data.Dataset,
                      samples: int = 128,
                      batch_size: int = 8,
-                     num_workers: int = 4):
+                     num_workers: int = 2):
     """Computes mean and std from samples from a Pytorch dataset.
 
     Args:

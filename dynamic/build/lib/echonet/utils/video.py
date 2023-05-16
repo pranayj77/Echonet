@@ -136,7 +136,7 @@ def run(
     if lr_step_period is None:
         lr_step_period = math.inf
     scheduler = torch.optim.lr_scheduler.StepLR(optim, lr_step_period)
-
+    print(f"num_workers{num_workers}")
     # Compute mean and std
     mean, std = echonet.utils.get_mean_and_std(echonet.datasets.Echo(root=data_dir, split="train"))
     kwargs = {"target_type": task,
@@ -145,7 +145,6 @@ def run(
               "length": frames,
               "period": period,
               }
-    print(f"num_workers{num_workers}")
     # Set up datasets and dataloaders
     dataset = {}
     dataset["train"] = echonet.datasets.Echo(root=data_dir, split="train", **kwargs, pad=12)
@@ -348,8 +347,8 @@ def run_epoch(model, dataloader, train, optim, device, save_all=False, block_siz
                     loss.backward()
                     optim.step()
 
-                #total += loss.item() * X.size(0)
-                #n += X.size(0)
+                total += loss.item() * X.size(0)
+                n += X.size(0)
 
                 pbar.set_postfix_str("{:.2f} ({:.2f}) / {:.2f}".format(0, 0,0))
                 pbar.update()
@@ -359,3 +358,5 @@ def run_epoch(model, dataloader, train, optim, device, save_all=False, block_siz
     y = np.concatenate(y)
 
     return total / n, yhat, y
+if __name__ == '__main__':
+    run()
